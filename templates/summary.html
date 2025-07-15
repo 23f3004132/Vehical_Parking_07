@@ -1,0 +1,22 @@
+{% extends "admin_base.html" %}
+{% block content %}
+<div class="content">
+    <h2 class="page-title">Summary shows statistical Charts</h2>
+
+    {% if pie_chart and bar_chart %}
+    <div class="charts-container">
+        <div class="chart-box">
+            <h3>Revenue from each parking lot</h3>
+            <img src="{{ url_for('static', filename=pie_chart) }}" alt="Revenue Pie Chart" class="chart-img">
+        </div>
+        <div class="chart-box">
+            <h3>Summary on available and occupied parking lots</h3>
+            <img src="{{ url_for('static', filename=bar_chart) }}" alt="Occupancy Bar Chart" class="chart-img">
+        </div>
+    </div>
+    {% else %}
+    <p>No data available to display charts.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

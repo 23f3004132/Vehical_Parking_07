@@ -1,0 +1,39 @@
+<!-- Register Page -->
+<!DOCTYPE html>
+<html lang="en">    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+</head>
+<body>
+    <div class="form-container">
+    <h2>User Signup</h2>
+    <form method="POST" action="{{ url_for('register') }}">
+        <label for="full_name">Full Name:</label>
+        <input type="text" id="full_name" name="full_name" placeholder="xyz" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="@study.iitm.ac.in" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" placeholder="123456789" required>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" placeholder="Address" required>
+
+        <label for="pin_code">Pin Code:</label>
+        <input type="text" id="pin_code" name="pin_code" placeholder="123456" required>
+
+        <button type="submit">Register</button>
+
+        <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+        <p style="color: green;"> {{msg}} </p>  
+    </form>
+    </div>
+</body>
+</html>

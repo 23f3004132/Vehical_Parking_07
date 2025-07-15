@@ -1,0 +1,33 @@
+{% extends "admin_base.html" %}
+{% block content %}
+<h2 class="page-title" style = 'color: #004080; text-align: center;'>Registered Users</h2>
+<div class="content">
+    {% if users %}
+    <table class="users-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Full Name</th>
+                <th>Address</th>
+                <th>Pin Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.full_name }}</td>
+                <td>{{ user.address }}</td>
+                <td>{{ user.pin_code }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No users found.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - Vehicle Parking System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">Welcome to Admin</div>
+        <ul class="nav-links">
+            <li><a href="/admin_dashboard">Home</a></li>
+            <li><a href="{{ url_for('users_page') }}">Users</a></li>
+            <li><a href="{{ url_for('search') }}">Search</a></li>
+            <li><a href="{{ url_for('summary') }}">Summary</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+        <div class="edit-profile"><a href="{{ url_for('edit_profile') }}">Edit Profile</a></div>
+    </nav>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
+
+
+
+
