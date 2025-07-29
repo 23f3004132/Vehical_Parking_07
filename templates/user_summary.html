@@ -1,0 +1,30 @@
+{% extends 'user_base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user_summary.css') }}">
+
+<div>
+
+    {% if active_chart or completed_chart %}
+        <h2>Your Booking Summary</h2>
+        <div class="charts-container">
+            {% if active_chart %}
+            <div class="chart-box">
+                <h3>Active Bookings</h3>
+                <img src="{{ url_for('static', filename='images/' + active_chart) }}" alt="Active Chart" class="chart-img">
+            </div>
+            {% endif %}
+
+            {% if completed_chart %}
+            <div class="chart-box">
+                <h3>Released Bookings</h3>
+                <img src="{{ url_for('static', filename='images/' + completed_chart) }}" alt="Completed Chart" class="chart-img">
+            </div>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No reservation data found.</p>
+    {% endif %}
+
+</div>
+{% endblock %}

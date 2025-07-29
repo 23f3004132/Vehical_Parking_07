@@ -293,3 +293,182 @@ def user_dashboard():
     reservations = Reservation.query.filter_by(user_id=user_id).all()
 
     return render_template("user_dashboard.html", reservations=reservations, lots=lots)
+
+
+@app.route('/book/<int:lot_id>', methods=['GET', 'POST'])
+def book_spot(lot_id):
+    if 'user_id' not in session or session.get('role') != 'user':
+        return redirect(url_for('login'))
+    
+    user_id = session.get('user_id')
+    lot = ParkingLot.query.get_or_404(lot_id)
+    available_spot = ParkingSpot.query.filter_by(lot_id=lot.id, status='A').first()
+
+
+    if request.method == 'GET':
+        if not available_spot:
+            flash('No available spots in this lot.')
+            return redirect(url_for('user_dashboard'))
+        
+        return render_template('book_spot.html', lot=lot, spot=available_spot,user_id=user_id)
+
+    if request.method == 'POST':
+        vehicle_no = request.form.get('vehicle_no')
+
+        if not vehicle_no:
+            flash('Vehicle number is required.')
+            return redirect(url_for('show_book_form', lot_id=lot_id))
+
+        lot.occupied_spot += 1
+        db.session.commit()
+
+        reservation = Reservation(
+            user_id=user_id,
+            spot_id=available_spot.id,
+            vehicle_number=vehicle_no,
+            parking_time=datetime.now()
+        )
+
+        available_spot.status = 'O'
+        db.session.add(reservation)
+        db.session.commit()
+
+        flash('Spot successfully booked.')
+        return redirect(url_for('user_dashboard'))
+
+
+@app.route('/release_spot/<int:reservation_id>', methods=['GET', 'POST'])
+def release_spot(reservation_id):
+    if 'user_id' not in session or session.get('role') != 'user':
+        return redirect(url_for('login'))
+    
+    reservation = Reservation.query.get_or_404(reservation_id)
+    lot  = ParkingLot.query.get(reservation.parking_spot.lot_id)
+    leaving_time = datetime.now()
+    parked_duration = (leaving_time - reservation.parking_time).total_seconds() / 3600
+
+    if request.method == 'GET':
+        total_cost = parked_duration * lot.price_per_unit
+        return render_template(
+            "release_spot.html",
+            reservation=reservation,
+            leaving_time=leaving_time.strftime('%Y-%m-%d %H:%M:%S'),
+            total_cost= round(total_cost, 2)
+        )
+
+    if request.method == 'POST':
+        reservation.leaving_time = datetime.now()
+    
+        parked_duration = (reservation.leaving_time - reservation.parking_time).total_seconds() / 3600  # in hours 
+        total_cost = parked_duration * reservation.parking_spot.parking_lot.price_per_unit
+        
+        reservation.total_price = round(total_cost, 2)
+
+        db.session.commit()
+        
+        spot = ParkingSpot.query.get(reservation.spot_id)
+        spot.status = 'A'
+
+        lot = ParkingLot.query.get(spot.lot_id)
+        lot.occupied_spot -= 1
+
+        db.session.commit()
+
+        flash(f"Spot released successfully. Total cost: ₹{total_cost:.2f}", 'success')
+        return redirect(url_for('user_dashboard'))
+
+@app.route('/user_summary')
+def user_summary():
+    if 'user_id' not in session or session.get('role') != 'user':
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    reservations = Reservation.query.filter_by(user_id=user_id).all()
+
+    if not reservations:
+        return render_template("user_summary.html", active_chart=None, completed_chart=None, reservations=[])
+
+    active_counts = defaultdict(int)
+    completed_counts = defaultdict(int)
+
+    for res in reservations:
+        lot = res.parking_spot.parking_lot
+        if lot:
+            if res.leaving_time:
+                completed_counts[lot.lot_name] += 1
+            else:
+                active_counts[lot.lot_name] += 1
+
+    def group_low_counts(data):
+        total = sum(data.values())
+        threshold = 0.05
+        grouped = defaultdict(int)
+        for lot, count in data.items():
+            if total > 0 and count / total < threshold:
+                grouped["Others"] += count
+            else:
+                grouped[lot] += count
+        return grouped
+
+    grouped_active = group_low_counts(active_counts)
+    grouped_completed = group_low_counts(completed_counts)
+    print("Grouped Active:", grouped_active)
+    print("Grouped Completed:", grouped_completed)
+
+    if grouped_active:
+        plt.figure(figsize=(6,4))
+        plt.bar(grouped_active.keys(), grouped_active.values(), color='skyblue', width=0.6)
+        plt.xlabel('Parking Lots')
+        plt.ylabel('Active Bookings')
+        plt.title('Active Reservations per Lot')
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        active_path = "static/images/user_active_chart.png"
+        plt.savefig(active_path)
+        plt.close()
+    else:
+        active_path = None
+
+    if grouped_completed:
+        plt.figure(figsize=(6, 4))
+        lot_names = list(grouped_completed.keys())
+        counts = list(grouped_completed.values())
+
+        bar_width = 0.4 if len(lot_names) == 1 else 0.6  
+
+        plt.bar(lot_names, counts, color='violet', width=bar_width)
+        plt.xlabel('Parking Lots')
+        plt.ylabel('Completed Bookings')
+        plt.title('Released Reservations per Lot')
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        completed_path = "static/images/user_completed_chart.png"
+        plt.savefig(completed_path)
+        plt.close()
+    else:
+        completed_path = None
+
+    return render_template("user_summary.html",
+                           active_chart='user_active_chart.png' if active_path else None,
+                           completed_chart='user_completed_chart.png' if completed_path else None,
+                           reservations=reservations)
+
+@app.route('/user_profile', methods=['GET', 'POST'])
+def user_profile():
+    if 'user_id' not in session or session.get('role') != 'user':
+        return redirect(url_for('login'))
+
+    user = User.query.get(session['user_id'])
+
+    if request.method == 'GET':
+        return render_template('user_profile.html', user=user)
+
+    if request.method == 'POST':
+        user.password = request.form['password']
+        user.full_name = request.form['full_name']
+        user.pin_code = request.form['pin_code']
+        user.address = request.form['address']
+
+        db.session.commit()
+        flash('Profile updated successfully!', 'success')
+        return redirect(url_for('user_dashboard'))
