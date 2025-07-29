@@ -178,6 +178,14 @@ def view_reservation_details(spot_id):
 
     return render_template('reservation_details.html', reservation=reservation)
 
+@app.route('/parking_history')
+def parking_history():
+    if 'user_id' not in session or session.get('role') != 'admin':
+        return redirect(url_for('login'))
+
+    reservations = Reservation.query.all()
+    return render_template('parking_history.html', reservations=reservations)
+
 @app.route('/users')
 def users_page():
     if 'user_id' not in session or session.get('role') != 'admin':
@@ -186,13 +194,6 @@ def users_page():
     all_users = User.query.filter_by(role='user').all()
     return render_template('users.html', users=all_users)
 
-@app.route('/parking_history')
-def parking_history():
-    if 'user_id' not in session or session.get('role') != 'admin':
-        return redirect(url_for('login'))
-
-    reservations = Reservation.query.all()
-    return render_template('parking_history.html', reservations=reservations)
 
 @app.route('/summary')
 def summary():
