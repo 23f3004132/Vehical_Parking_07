@@ -11,8 +11,6 @@ def setup_app():
     app.app_context().push()
     app.debug = True
     print("App is setup")
-
-# call the setup
 setup_app()
 
 from controllers.controller import *

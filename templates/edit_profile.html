@@ -19,6 +19,7 @@
         <input type="password" name="password" id="password" value="{{ user.password }}" required>
 
         <button type="submit" class="save-btn">Save Changes</button>
+        <a href="{{ url_for('admin_dashboard') }}" class="cancel-btn">Cancel</a>
     </form>
 </div>
 {% endblock %}

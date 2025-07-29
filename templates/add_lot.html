@@ -5,7 +5,7 @@
 <div class="add-lot-container">
     <form method="POST">
         <label>Location Name:</label><br>
-        <input type="text" id="location_name"  name="location_name" required><br><br>
+        <input type="text" id="location_name"  name="lot_name" required><br><br>
         
         <label>Address:</label><br>
         <input type="text" id="address" name="address" required><br><br>
@@ -20,6 +20,7 @@
         <input type="number" id="total_spots" name="total_spots" required><br><br>
         
         <button type="submit">Add Lot</button>
+        <a href="{{ url_for('admin_dashboard') }}" class="cancel-btn">Cancel</a>
     </form>
 </div>
 {% endblock %}

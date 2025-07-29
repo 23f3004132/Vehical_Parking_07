@@ -19,10 +19,11 @@ class User(db.Model):
 class ParkingLot(db.Model):
     __tablename__ = 'parking_lot'
     id = db.Column(db.Integer, primary_key=True)
-    location_name = db.Column(db.String(100), nullable=False)
+    lot_name = db.Column(db.String(100), nullable=False)
     address = db.Column(db.String(200), nullable=False)
     pin_code = db.Column(db.String(10), nullable=False)
     price_per_unit = db.Column(db.Float, nullable=False)
+    occupied_spot = db.Column(db.Integer, nullable=False, default=0)
     total_spots = db.Column(db.Integer, nullable=False)
     
     spots = db.relationship('ParkingSpot', backref='parking_lot', cascade='all, delete', lazy=True)
@@ -43,4 +44,5 @@ class Reservation(db.Model):
     vehicle_number = db.Column(db.String(20), nullable=False)
     parking_time = db.Column(db.DateTime, default=datetime.utcnow)
     leaving_time = db.Column(db.DateTime)
-    parking_cost_per_unit = db.Column(db.Float, nullable=False)
+    total_price = db.Column(db.Float, nullable=False, default=0.0)
+

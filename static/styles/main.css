@@ -1,0 +1,305 @@
+/* General Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+body {
+    background-color: #f4f7fa;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: #004080;
+}
+
+h2, h3 {
+    margin-bottom: 1rem;
+    color: #004080;
+    text-align: center;
+}
+
+
+/* Navbar */
+.navbar {
+    background-color: #004080;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.navbar .nav-links li a {
+    color: white;
+    font-weight: 500;
+}
+
+.edit-profile, .edit-profile a {
+    color: #f0f0f0;
+}
+
+/* Containers */
+.content {
+    padding: 2rem;
+}
+
+.form-container, .add-lot-container, .summary-container, .user-profile-container {
+    max-width: 700px;
+    background: white;
+    padding: 2rem;
+    margin: 2rem auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.charts-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.chart-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 45%;
+    min-width: 300px;
+    text-align: center;
+}
+
+.chart-img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+.form-group, label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+}
+
+button, .btn, .reserve-btn, .cancel-btn {
+    padding: 10px 20px;
+    background-color: #004080;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover, .btn:hover, .cancel-btn:hover {
+    background-color: #003060;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+th {
+    background-color: #004080;
+    color: white;
+}
+
+.release-btn, .book-btn {
+    background-color: #28a745;
+    padding: 6px 12px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+}
+
+.release-btn:hover, .book-btn:hover {
+    background-color: #218838;
+}
+
+.parked-out {
+    font-weight: bold;
+    color: #888;
+}
+
+.history-table {
+    overflow-x: auto;
+}
+
+/* Lot Grid */
+.lots-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.lot-card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.05);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.spot {
+    padding: 8px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+}
+
+.spot button.occupied {
+    background-color: #dc3545;
+}
+
+.spot button.available {
+    background-color: #28a745;
+}
+
+.lot-actions {
+    margin: 0.5rem 0;
+}
+
+/* Dashboard */
+.dashboard {
+    margin-top: 2rem;
+}
+
+/* Chart Box */
+.chart-box {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.chart-img {
+    width: 80%;
+    max-width: 600px;
+    margin-top: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Error & Success */
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.success-message {
+    color: green;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Buttons Alignment */
+.btn-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.flash-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.flash-message {
+    background-color: #ffeeba;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    padding: 12px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    min-width: 250px;
+    position: relative;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    animation: slideIn 0.4s ease;
+}
+
+.flash-close {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    color: #856404;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .lots-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    }
+}
