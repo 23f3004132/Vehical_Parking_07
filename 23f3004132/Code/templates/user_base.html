@@ -1,0 +1,24 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dahsboard - Vehicle Parking System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <span class="navbar-left">Welcome, {{ session['full_name'] }}</span>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('user_dashboard') }}">Home</a></li> 
+            <li><a href="{{ url_for('user_summary') }}">Summary</a></li> 
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+            <div><a class="edit-profile" href="{{ url_for('user_profile') }}">Edit Profile</a></div>
+        </nav>
+
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
+

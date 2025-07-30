@@ -1,0 +1,39 @@
+{% extends "admin_base.html" %}
+{% block content %}
+<h2 style="color: #004080; text-align: center;">Parking History</h2>
+<div>
+    {% if reservations %}
+    <table>
+        <thead>
+            <tr>
+                <th>Spot ID</th>
+                <th>Customer ID</th>
+                <th>Vehicle Number</th>
+                <th>Parking Time</th>
+                <th>Leaving Time</th>
+                <th>Parking Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+                <tr>
+                    <td>{{ reservation.spot_id }}</td>
+                    <td>{{ reservation.user.full_name }}</td>
+                    <td>{{ reservation.vehicle_number }}</td>
+                    <td>{{ reservation.parking_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                    {% if reservation.leaving_time %}
+                        <td>{{ reservation.leaving_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ reservation.total_price }}</td>
+                    {% else %}
+                        <td>N/A</td>
+                        <td>{{ reservation.total_price }}</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No parking history found.</p>
+    {% endif %}
+
+{% endblock %}

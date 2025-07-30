@@ -1,0 +1,26 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+<h2 style = 'color: #004080; text-align: center;'>Add Parking Lot</h2>
+<div class="add-lot-container">
+    <form method="POST">
+        <label>Location Name:</label><br>
+        <input type="text" id="location_name"  name="lot_name" required><br><br>
+        
+        <label>Address:</label><br>
+        <input type="text" id="address" name="address" required><br><br>
+        
+        <label>Pin Code:</label><br>
+        <input type="text"  id="pin_code" name="pin_code" required><br><br>
+        
+        <label>Price per Unit:</label><br>
+        <input type="number" id="price_per_unit" name="price_per_unit" required><br><br>
+        
+        <label>Total Spots:</label><br>
+        <input type="number" id="total_spots" name="total_spots" required><br><br>
+        
+        <button type="submit">Add Lot</button>
+        <a href="{{ url_for('admin_dashboard') }}" class="cancel-btn">Cancel</a>
+    </form>
+</div>
+{% endblock %}

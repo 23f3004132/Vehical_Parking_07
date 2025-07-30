@@ -1,0 +1,24 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+<h2 style="color: #004080; text-align: center;">Occupied Parking Spot Details</h2>
+
+<div class="form-container">
+    <label>Spot ID:</label>
+    <input type="text" value="{{ reservation.spot_id }}" readonly>
+
+    <label>Customer ID:</label>
+    <input type="text" value="{{ reservation.user_id }}" readonly>
+
+    <label>Vehicle Number:</label>
+    <input type="text" value="{{ reservation.vehicle_number }}" readonly>
+
+    <label>Parking Time:</label>
+    <input type="text" value="{{ reservation.parking_time.strftime('%d/%m/%Y %H:%M') }}" readonly>
+
+    <label>Estimated Parking Cost:</label>
+    <input type="text" value="{{ reservation.parking_cost_per_unit }}" readonly>
+
+    <a href="{{ url_for('admin_dashboard') }}" class="cancel-btn">Back</a>
+</div>
+{% endblock %}
